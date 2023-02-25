@@ -1,5 +1,7 @@
 # Track Video Events
-Support for old browsers and  smart TV.
+To debug order of execution of events and values of video tag.
+
+Support for old browsers and smart TV.
 
 # Using
 ```js
