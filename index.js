@@ -52,7 +52,7 @@ function trackVideoEvents(videoElement, options) {
     });
 
     videoElement.addEventListener('canplaythrough', function() {
-        console.log('canplaythrough', 'buffer: ' + getBuffer());
+        console.log('canplaythrough', 'buffer: ' + getBuffer(), 'networkState: ' + getNetworkState(), 'readyState: ' + getReadyState());
     });
 
     videoElement.addEventListener('durationchange', function() {
