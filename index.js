@@ -151,7 +151,7 @@ function trackVideoEvents(videoElement) {
     videoElement.addEventListener('timeupdate', function() {
         var frames = getQuality();
         if (frames.droppedFrames) {
-            console.log('timeupdate', 'currentTime: ' + videoElement.currentTime, 'shownFrames: ' + frames.shownFrames, 'droppedFrames: ' + frames.droppedFrames, 'buffer: ' + getBuffer(), 'networkState: ' + getNetworkState(), 'readyState: ' + getReadyState()
+            console.log('timeupdate', 'currentTime: ' + videoElement.currentTime, 'shownFrames: ' + frames.shownFrames, 'droppedFrames: ' + frames.droppedFrames, 'buffer: ' + getBuffer(), 'networkState: ' + getNetworkState(), 'readyState: ' + getReadyState());
         } else {
             console.log('timeupdate', 'currentTime: ' + videoElement.currentTime, 'buffer: ' + getBuffer(), 'networkState: ' + getNetworkState(), 'readyState: ' + getReadyState());
         }
