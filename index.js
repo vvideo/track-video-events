@@ -1,4 +1,4 @@
-function trackVideoEvents(videoElement) {
+function trackVideoEvents(videoElement, options) {
     function getBuffer() {
         var currentTime = videoElement.currentTime;
         var len = videoElement.buffered.length
@@ -12,39 +12,39 @@ function trackVideoEvents(videoElement) {
 
         return 0;
     }
-    
+
     function getQuality() {
          var frames = videoElement.getVideoPlaybackQuality && videoElement.getVideoPlaybackQuality();
-        
+
         if (!frames) {
             return {
                 droppedFrames: 0,
                 shownFrames: 0
             };
         }
-        
+
         return frames;
     }
 
     function getReadyState() {
         // https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/readyState
-        return {
+        return videoElement.readyState + ' (' + {
             0: 'HAVE_NOTHING',
             1: 'HAVE_METADATA',
             2: 'HAVE_CURRENT_DATA',
             3: 'HAVE_FUTURE_DATA',
             4: 'HAVE_ENOUGH_DATA'
-        }[videoElement.readyState] + ' (' + videoElement.readyState + ')';
+        }[videoElement.readyState] + ')';
     }
 
     function getNetworkState() {
         // https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/networkState
-        return {
+        return videoElement.networkState + ' (' + {
             0: 'NETWORK_EMPTY',
             1: 'NETWORK_IDLE',
             2: 'NETWORK_LOADING',
             3: 'NETWORK_NO_SOURCE'
-        }[videoElement.networkState] + ' (' + videoElement.networkState + ')';
+        }[videoElement.networkState] + ')';
     }
 
     videoElement.addEventListener('canplay', function() {
@@ -147,15 +147,17 @@ function trackVideoEvents(videoElement) {
             console.log('waiting', 'networkState: ' + getNetworkState(), 'readyState: ' + getReadyState());
         }
     });
-    
-    videoElement.addEventListener('timeupdate', function() {
-        var frames = getQuality();
-        if (frames.droppedFrames) {
-            console.log('timeupdate', 'currentTime: ' + videoElement.currentTime, 'shownFrames: ' + frames.shownFrames, 'droppedFrames: ' + frames.droppedFrames, 'buffer: ' + getBuffer(), 'networkState: ' + getNetworkState(), 'readyState: ' + getReadyState());
-        } else {
-            console.log('timeupdate', 'currentTime: ' + videoElement.currentTime, 'buffer: ' + getBuffer(), 'networkState: ' + getNetworkState(), 'readyState: ' + getReadyState());
-        }
-    });    
+
+    if (options && options.ignoreTimeupdate) {
+        videoElement.addEventListener('timeupdate', function() {
+            var frames = getQuality();
+            if (frames.droppedFrames) {
+                console.log('timeupdate', 'currentTime: ' + videoElement.currentTime, 'shownFrames: ' + frames.shownFrames, 'droppedFrames: ' + frames.droppedFrames, 'buffer: ' + getBuffer(), 'networkState: ' + getNetworkState(), 'readyState: ' + getReadyState());
+            } else {
+                console.log('timeupdate', 'currentTime: ' + videoElement.currentTime, 'buffer: ' + getBuffer(), 'networkState: ' + getNetworkState(), 'readyState: ' + getReadyState());
+            }
+        });
+    }
 }
 
 // var video = document.querySelector('video');
