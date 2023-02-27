@@ -1,4 +1,9 @@
 function trackVideoEvents(videoElement, options) {
+    if (!videoElement) {
+        console.error('Video element is not specified.');
+        return;
+    }
+
     function getBuffer() {
         var currentTime = videoElement.currentTime;
         var len = videoElement.buffered.length
@@ -148,7 +153,7 @@ function trackVideoEvents(videoElement, options) {
         }
     });
 
-    if (options && options.ignoreTimeupdate) {
+    if (options && options.ignoreTimeupdate !== true) {
         videoElement.addEventListener('timeupdate', function() {
             var frames = getQuality();
             if (frames.droppedFrames) {
