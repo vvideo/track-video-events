@@ -153,7 +153,8 @@ function trackVideoEvents(videoElement, options) {
         }
     });
 
-    if (options && options.ignoreTimeupdate !== true) {
+    var ignoreTimeupdate = options && options.ignoreTimeupdate === true;
+    if (!ignoreTimeupdate) {
         videoElement.addEventListener('timeupdate', function() {
             var frames = getQuality();
             if (frames.droppedFrames) {
