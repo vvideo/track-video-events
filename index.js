@@ -79,15 +79,15 @@ function trackVideoEvents(videoElement) {
     });
 
     videoElement.addEventListener('play', function() {
-        console.log('play', 'paused: '+ videoElement.paused);
+        console.log('play');
     });
 
     videoElement.addEventListener('playing', function() {
-        console.log('playing', 'paused: '+ videoElement.paused);
+        console.log('playing');
     });
 
     videoElement.addEventListener('pause', function() {
-        console.log('pause', 'paused: '+ videoElement.paused);
+        console.log('pause');
     });
 
     videoElement.addEventListener('volumechange', function() {
@@ -134,6 +134,10 @@ function trackVideoEvents(videoElement) {
             console.log('waiting', 'networkState: ' + getNetworkState(), 'readyState: ' + getReadyState());
         }
     });
+    
+    videoElement.addEventListener('timeupdate', function() {
+        console.log('timeupdate', 'currentTime: ' + videoElement.currentTime, 'buffer: ' + getBuffer(), 'networkState: ' + getNetworkState(), 'readyState: ' + getReadyState()
+    });    
 }
 
 // var video = document.querySelector('video');
