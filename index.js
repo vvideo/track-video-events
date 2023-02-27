@@ -12,6 +12,19 @@ function trackVideoEvents(videoElement) {
 
         return 0;
     }
+    
+    function getQuality() {
+         var frames = videoElement.getVideoPlaybackQuality && videoElement.getVideoPlaybackQuality();
+        
+        if (!frames) {
+            return {
+                droppedFrames: 0,
+                shownFrames: 0
+            };
+        }
+        
+        return frames;
+    }
 
     function getReadyState() {
         // https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/readyState
@@ -127,8 +140,8 @@ function trackVideoEvents(videoElement) {
     });
 
     videoElement.addEventListener('waiting', function() {
-        var frames = videoElement.getVideoPlaybackQuality && videoElement.getVideoPlaybackQuality();
-        if (frames) {
+        var frames = getQuality();
+        if (frames.droppedFrames) {
             console.log('waiting', 'shownFrames: ' + frames.shownFrames, 'droppedFrames: ' + frames.droppedFrames, 'networkState: ' + getNetworkState(), 'readyState: ' + getReadyState());
         } else {
             console.log('waiting', 'networkState: ' + getNetworkState(), 'readyState: ' + getReadyState());
@@ -136,7 +149,12 @@ function trackVideoEvents(videoElement) {
     });
     
     videoElement.addEventListener('timeupdate', function() {
-        console.log('timeupdate', 'currentTime: ' + videoElement.currentTime, 'buffer: ' + getBuffer(), 'networkState: ' + getNetworkState(), 'readyState: ' + getReadyState()
+        var frames = getQuality();
+        if (frames.droppedFrames) {
+            console.log('timeupdate', 'currentTime: ' + videoElement.currentTime, 'shownFrames: ' + frames.shownFrames, 'droppedFrames: ' + frames.droppedFrames, 'buffer: ' + getBuffer(), 'networkState: ' + getNetworkState(), 'readyState: ' + getReadyState()
+        } else {
+            console.log('timeupdate', 'currentTime: ' + videoElement.currentTime, 'buffer: ' + getBuffer(), 'networkState: ' + getNetworkState(), 'readyState: ' + getReadyState());
+        }
     });    
 }
 
